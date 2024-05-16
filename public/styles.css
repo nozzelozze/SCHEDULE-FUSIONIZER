@@ -6,6 +6,33 @@
     src: url('JetBrainsMono-Regular.woff2') format('woff2');
 }
 
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    height: 100vh
+}
+
+.day-column {
+    flex: 1;
+    min-width: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.event {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
 :root {
     font-size: 10px;
 

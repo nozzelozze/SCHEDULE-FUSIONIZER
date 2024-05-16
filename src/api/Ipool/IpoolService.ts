@@ -1,4 +1,5 @@
-import { Schedule, Event } from "../../util/types";
+import { start } from "repl";
+import { Schedule, Activity } from "../../util/types";
 import { Ipool } from "./IpoolClient";
 
 
@@ -6,17 +7,17 @@ import { Ipool } from "./IpoolClient";
 export class IPoolService
 {
     
-    public getSchedule = async (): Promise<Schedule> =>
+    public getSchedule = async (startDate: Date, endDate: Date): Promise<Activity[]> =>
     {
         let shiftsApi = new Ipool.ShiftsClient()
         let tokenApi = new Ipool.Client()
         let token = (await tokenApi.token("password", process.env.IPOOL_USERNAME ?? "", process.env.IPOOL_PASSWORD ?? "")).access_token ?? ""
 
-        let schedule: Schedule = {}
+        let events: Activity[] = []
         
         let shifts = await shiftsApi.loadStaffShiftsV2(
-            new Date("2024-05-1"), 
-            new Date("2024-05-31"), 
+            startDate, 
+            endDate, 
             false, 
             undefined, 
             undefined, 
@@ -26,24 +27,14 @@ export class IPoolService
 
         shifts.forEach((shift: any) => {
             
-            let event: Event = {
+            let event: Activity = {
                 startTime: new Date(shift["DateFrom"]),
                 endTime: new Date(shift["DateTo"]),
                 label: `Ica - ${shift["ShortDescription"]}`
             }
-
-            let date: string = new Date(shift["DateFrom"]).toString()
-            let key = schedule[date]
-
-            if (key === undefined)
-            {
-                schedule[date] = [event]
-            } else
-            {
-                key.push(event)
-            }
+            events.push(event)
         })
 
-        return schedule
+        return events
     }
 }

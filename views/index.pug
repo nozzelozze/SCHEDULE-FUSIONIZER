@@ -4,3 +4,12 @@ html
         title Schedule
         link(rel='stylesheet', href='/styles.css')
     body
+        .main
+            each day, index in days
+                .day-column
+                    h2 Day #{index + 1}
+                    each event in day.events
+                        .event
+                            p= event.label
+                            p= event.startTime
+                            p= event.endTime
