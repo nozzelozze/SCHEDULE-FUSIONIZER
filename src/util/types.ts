@@ -6,8 +6,9 @@ export type Activity =
     label: string
 }
 
-export type Day = {
-
+export type Day = 
+{
+    name: string,
     events: Activity[]
 }
 

@@ -13,7 +13,7 @@ export class IPoolService
         let tokenApi = new Ipool.Client()
         let token = (await tokenApi.token("password", process.env.IPOOL_USERNAME ?? "", process.env.IPOOL_PASSWORD ?? "")).access_token ?? ""
 
-        let events: Activity[] = []
+        let activities: Activity[] = []
         
         let shifts = await shiftsApi.loadStaffShiftsV2(
             startDate, 
@@ -32,9 +32,9 @@ export class IPoolService
                 endTime: new Date(shift["DateTo"]),
                 label: `Ica - ${shift["ShortDescription"]}`
             }
-            events.push(event)
+            activities.push(event)
         })
 
-        return events
+        return activities
     }
 }

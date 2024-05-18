@@ -1,5 +1,6 @@
 test.ts
 database/database.json
+src/api/Skola24/api/
 # Logs
 logs
 *.log
