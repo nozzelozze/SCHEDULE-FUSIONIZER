@@ -9,46 +9,43 @@
 
 h1 {
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
     margin-bottom: 10px;
     color: blanchedalmond
 }
 
 p {
-    font-size: 1.2em;
+    font-size: 1.4em;
     color: rgb(0, 0, 0);
-    font-weight: 600;
+    text-align: center;
 }
 span {
-    color: rgb(0, 0, 0)
+    color: rgb(0, 0, 0);
+    font-size: 1.6em;
+    font-weight: 600;
 }
 
 .main {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     height: 100%;
 }
 
 .weekdays {
     display: flex;
     flex-direction: row;
-    gap: 10px;
     height: 70%;
 }
 
 .weekend {
     display: flex;
     flex-direction: row;
-    gap: 10px;
     height: 30%;
 }
 
 .day-column {
     flex: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 5px;
 }
 
 .event-column {
@@ -63,9 +60,14 @@ span {
 }
 
 .event {
-    margin-bottom: 10px;
+    margin-bottom: 60px;
     padding: 5px;
-    border-bottom: 1px solid #eee;
+    min-height: 150px;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
 }
 :root {
     font-size: 10px;

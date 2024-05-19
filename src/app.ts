@@ -4,6 +4,7 @@ import { readDatabase } from "./database";
 import groupEventsByWeek from "./util/groupEventsByWeek";
 //import "./jobs/fetchSchedulesAndSave" // Import so it runs
 import { fetchSchedulesAndSave } from "./jobs/fetchSchedulesAndSave";
+import { getWeek } from "date-fns";
 config();
 
 const app = express();
@@ -18,12 +19,12 @@ fetchSchedulesAndSave()
 
 app.get("/", (req, res) =>
 {
-    res.render("index", { days: groupEventsByWeek(readDatabase()) })
+    res.render("index", { days: groupEventsByWeek(readDatabase()), weekNumber: getWeek(new Date(), { weekStartsOn: 1 }) })
 })
 
 app.get("/next", (req, res) =>
 {
-    res.render("index", { days: groupEventsByWeek(readDatabase(), 1) })
+    res.render("index", { days: groupEventsByWeek(readDatabase(), 1), weekNumber: getWeek(new Date(), { weekStartsOn: 1 })+1 })
 })
 
 app.listen(PORT, () =>
