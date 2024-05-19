@@ -18,9 +18,9 @@ export const fetchSchedulesAndSave = async () => // export is temp
 
     let ipoolEvents = await ipoolService.getSchedule(startOfWeek(new Date(), { weekStartsOn: 1 }), twoWeeksAfter)
 
-    let skola24EventsCurrentWeek = await skola24Service.getSchedule(getWeek(new Date()))
-    let skola24EventsNextWeek = await skola24Service.getSchedule(getWeek(oneWeekAfter))
-    let skola24EventsTwoWeek = await skola24Service.getSchedule(getWeek(twoWeeksAfter))
+    let skola24EventsCurrentWeek = await skola24Service.getSchedule(getWeek(new Date(), {weekStartsOn: 1}))
+    let skola24EventsNextWeek = await skola24Service.getSchedule(getWeek(oneWeekAfter, {weekStartsOn: 1}))
+    let skola24EventsTwoWeek = await skola24Service.getSchedule(getWeek(twoWeeksAfter, {weekStartsOn: 1}))
 
     writeToDatabase(ipoolEvents.concat(skola24EventsCurrentWeek, skola24EventsNextWeek, skola24EventsTwoWeek))
 

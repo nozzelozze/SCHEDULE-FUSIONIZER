@@ -6,12 +6,42 @@
     src: url('JetBrainsMono-Regular.woff2') format('woff2');
 }
 
+
+h1 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: blanchedalmond
+}
+
+p {
+    font-size: 1.2em;
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+}
+span {
+    color: rgb(0, 0, 0)
+}
+
 .main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 100%;
+}
+
+.weekdays {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    align-items: center;
-    height: 100vh
+    height: 70%;
+}
+
+.weekend {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    height: 30%;
 }
 
 .day-column {
@@ -21,16 +51,21 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.event-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 .event {
     margin-bottom: 10px;
     padding: 5px;
     border-bottom: 1px solid #eee;
-}
-
-h2 {
-    text-align: center;
-    font-size: 1.2em;
-    margin-bottom: 10px;
 }
 :root {
     font-size: 10px;

@@ -2,7 +2,8 @@ import { config } from "dotenv";
 import express from "express";
 import { readDatabase } from "./database";
 import groupEventsByWeek from "./util/groupEventsByWeek";
-import "./jobs/fetchSchedulesAndSave" // Import so it runs
+//import "./jobs/fetchSchedulesAndSave" // Import so it runs
+import { fetchSchedulesAndSave } from "./jobs/fetchSchedulesAndSave";
 config();
 
 const app = express();
@@ -12,6 +13,8 @@ app.set("views", "./views")
 app.set("view engine", "pug")
 
 app.use(express.static("public"))
+
+fetchSchedulesAndSave()
 
 app.get("/", (req, res) =>
 {

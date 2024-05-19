@@ -1,6 +1,7 @@
 import { start } from "repl";
 import { Schedule, Activity } from "../../util/types";
 import { Ipool } from "./IpoolClient";
+import Colors from "../../util/colors";
 
 
 
@@ -30,7 +31,8 @@ export class IPoolService
             let event: Activity = {
                 startTime: new Date(shift["DateFrom"]),
                 endTime: new Date(shift["DateTo"]),
-                label: `Ica - ${shift["ShortDescription"]}`
+                label: `Ica - ${shift["ShortDescription"]}`,
+                color: Colors["Red"]
             }
             activities.push(event)
         })

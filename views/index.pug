@@ -3,13 +3,34 @@ html
     head
         title Schedule
         link(rel="stylesheet", href="/styles.css")
+
     body
         .main
-            each day, index in days
+            mixin event(event)
+                .event(style=`background-color: ${event.color}`)
+                    p= event.label
+                    span= new Date(new Date(event.startTime).getTime()).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+                    span -
+                    span= new Date(new Date(event.endTime).getTime()).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+
+            mixin dayColumn(day)
                 .day-column
-                    h2= day.name
-                    each event in day.events
-                        .event
-                            p= event.label
-                            p= event.startTime
-                            p= event.endTime
+                    h1= day.name
+                    .event-column
+                        each event in day.events
+                            +event(event)
+
+            mixin weekendDayColumn(day)
+                .day-column
+                    h1= day.name
+                    .event-row
+                        each event in day.events
+                            +event(event)
+
+            .weekdays
+                each day in days.slice(0, 5)
+                    +dayColumn(day)
+
+            .weekend
+                each day in days.slice(5, 7)
+                    +weekendDayColumn(day)

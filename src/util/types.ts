@@ -3,7 +3,8 @@ export type Activity =
 {
     startTime: Date,
     endTime: Date,
-    label: string
+    label: string,
+    color?: string
 }
 
 export type Day = 
