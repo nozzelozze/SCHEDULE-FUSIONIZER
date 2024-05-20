@@ -9,8 +9,15 @@ import { getWeek } from "date-fns";
 import configManager from "./config/config";
 import checkValidConfig from "./util/getValidConfig";
 
-const app = express();
-const PORT = 3000;
+var fs = require("fs")
+var http = require("http")
+var https = require("https")
+var privateKey = fs.readFileSync("sslcert/server.key", "utf8")
+var certificate = fs.readFileSync("sslcert/server.crt", "utf8")
+
+var credentials = { key: privateKey, cert: certificate }
+
+const app = express()
 
 app.set("views", "./views")
 app.set("view engine", "pug")
@@ -42,7 +49,17 @@ app.get("/:config/:next?", checkValidConfig, (req, res) =>
         nextWeek: nextWeek
     })
 })
-app.listen(PORT, () =>
+
+var httpServer = http.createServer(app)
+var httpsServer = https.createServer(credentials, app)
+
+const port = process.env.PORT || 3000
+if (process.env.DEBUG === "true")
 {
-    console.log(`Server running on port ${PORT}. http://localhost:${PORT}`)
-})
+    console.log(`Server listening at http://localhost:${port}`)
+    httpServer.listen(port)
+} else
+{
+    console.log(`Server listening at https://localhost:${port}`)
+    httpsServer.listen(port)
+}
