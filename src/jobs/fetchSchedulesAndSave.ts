@@ -4,6 +4,8 @@ import { writeToDatabase } from '../database'
 import { getWeek, startOfWeek } from 'date-fns'
 import Skola24Client from '../api/Skola24/api/Skola24Client'
 import { Skola24Service } from '../api/Skola24/Skola24Service'
+import { Activity } from '../util/types'
+import configHandler, { Config } from '../config/config'
 
 export const fetchSchedulesAndSave = async () => // export is temp
 {
@@ -16,13 +18,23 @@ export const fetchSchedulesAndSave = async () => // export is temp
     const twoWeeksAfter = new Date()
     twoWeeksAfter.setDate(new Date().getDate() + 14)
 
-    let ipoolEvents = await ipoolService.getSchedule(startOfWeek(new Date(), { weekStartsOn: 1 }), twoWeeksAfter)
-
-    let skola24EventsCurrentWeek = await skola24Service.getSchedule(getWeek(new Date(), {weekStartsOn: 1}))
-    let skola24EventsNextWeek = await skola24Service.getSchedule(getWeek(oneWeekAfter, {weekStartsOn: 1}))
-    let skola24EventsTwoWeek = await skola24Service.getSchedule(getWeek(twoWeeksAfter, {weekStartsOn: 1}))
-
-    writeToDatabase(ipoolEvents.concat(skola24EventsCurrentWeek, skola24EventsNextWeek, skola24EventsTwoWeek))
+    
+    Object.values(configHandler.configs).forEach(async (config: Config) => {
+        let activities: Activity[] = []
+        if (config.skola24.use)
+        {
+            let skola24ActivitiesCurrentWeek = await skola24Service.getSchedule(getWeek(new Date(), {weekStartsOn: 1}), config.skola24)
+            let skola24ActivitiesNextWeek = await skola24Service.getSchedule(getWeek(oneWeekAfter, {weekStartsOn: 1}), config.skola24)
+            let skola24ActivitiesTwoWeek = await skola24Service.getSchedule(getWeek(twoWeeksAfter, {weekStartsOn: 1}), config.skola24)
+            activities = [...activities, ...skola24ActivitiesCurrentWeek, ...skola24ActivitiesNextWeek, ...skola24ActivitiesTwoWeek]
+        }
+        if (config.ipool.use)
+        {
+            let ipoolActivities = await ipoolService.getSchedule(startOfWeek(new Date(), { weekStartsOn: 1 }), twoWeeksAfter, config.ipool)
+            activities = [...activities, ...ipoolActivities]
+        }
+        writeToDatabase(activities, config.database)
+    })
 
 }
 

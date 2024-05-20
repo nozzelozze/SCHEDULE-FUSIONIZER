@@ -29,7 +29,7 @@ html
                         each event in day.events
                             +event(event)
 
-            h1(style="margin-bottom: 0px; font-weight: 300;") VECKA
+            h1(style="margin-bottom: 0px; font-weight: 300;") VECKA #{nextWeek ? " (Nästa)" : ""}
             h1(style="font-size: 3em")= weekNumber
 
             .weekdays

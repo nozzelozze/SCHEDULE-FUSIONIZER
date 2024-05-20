@@ -1,32 +1,28 @@
 import { readFileSync, writeFileSync } from "fs"
 import { Activity } from "./util/types"
+import { DatabaseConfig } from "./config/config"
+import handleError from "./error/handleError"
 
-const DATABASE_PATH = "database/database.json"
-
-
-export const readDatabase = (): Activity[] =>
+export const readDatabase = (config: DatabaseConfig): Activity[] =>
 {
     try
     {
-        const file = readFileSync(DATABASE_PATH, "utf8")
+        const file = readFileSync(config.path, "utf8")
         const data = JSON.parse(file)
-        console.log("Data successfully read")
         return data as Activity[]
     } catch (error)
     {
-        console.log("An error has occurred ", error)
         return []
     }
 }
 
-export const writeToDatabase = (data: Activity[]): void =>
+export const writeToDatabase = (data: Activity[], config: DatabaseConfig): void =>
 {
     try
     {
-        writeFileSync(DATABASE_PATH, JSON.stringify(data, null, 2), "utf8")
-        console.log("Data successfully saved to disk")
-    } catch (error)
+        writeFileSync(config.path, JSON.stringify(data, null, 2), "utf8")
+    } catch (error: any)
     {
-        console.log("An error has occurred ", error)
+        handleError(error)
     }
 }

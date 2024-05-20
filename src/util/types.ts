@@ -4,7 +4,8 @@ export type Activity =
     startTime: Date,
     endTime: Date,
     label: string,
-    color?: string
+    color?: string,
+    type: "skola24" | "ipool"
 }
 
 export type Day = 

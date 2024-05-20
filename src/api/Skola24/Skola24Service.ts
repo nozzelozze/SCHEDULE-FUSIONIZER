@@ -4,18 +4,19 @@ import Skola24Client from "./api/Skola24Client";
 import Host from "./api/utils/hosts";
 import SelectionType from "./api/utils/selectionTypes";
 import Colors from "../../util/colors";
+import { Skola24Config } from "../../config/config";
 
 export class Skola24Service
 {
 
-    public getSchedule = async (week: number): Promise<Activity[]> =>
+    public getSchedule = async (week: number, config: Skola24Config): Promise<Activity[]> =>
     {
         const client = new Skola24Client()
 
-        const hostName = process.env.SKOLA24_HOST
-        const unitGuid = process.env.SKOLA24_UNITGUID
-        const selection = process.env.SKOLA24_SELECTION
-        const acceptedLessons = JSON.parse(process.env.SKOLA24_ACCEPTED_LESSONS || "")
+        const hostName = config.host
+        const unitGuid = config.unitguid
+        const selection = config.selection
+        const acceptedLessons = config.accepted_lessons
 
         const activeSchoolYearsResponse = await client.getActiveSchoolYears({ hostName: hostName as Host, checkSchoolYearsFeatures: false })
         const year = activeSchoolYearsResponse.data.data.activeSchoolYears[0].guid
@@ -52,7 +53,7 @@ export class Skola24Service
         lessonInfo.forEach(lesson =>
         {
             let color = ""
-            const lessonName = lesson.texts[0]
+            const lessonName = lesson.texts[0] + " " + lesson.texts[2]
             let lessonIsAccepted = lesson.texts.some(text => 
                 text.toLowerCase().split(" ").some(word => {
                     if (Object.keys(acceptedLessons).includes(word))
@@ -78,7 +79,8 @@ export class Skola24Service
                     startTime,
                     endTime,
                     label: lessonName,
-                    color: color
+                    color: color,
+                    type: "skola24"
                 });
             }
         })

@@ -1,7 +1,8 @@
 test.ts
 todo.md
-database/database.json
+database/
 src/api/Skola24/api/
+configs/
 # Logs
 logs
 *.log

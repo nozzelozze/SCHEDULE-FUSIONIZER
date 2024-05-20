@@ -60,14 +60,15 @@ span {
 }
 
 .event {
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     padding: 5px;
-    min-height: 150px;
+    min-height: 135px;
     width: 100%;
     justify-content: space-around;
     align-items: center;
     flex-direction: column;
     display: flex;
+    border-radius: 2px;
 }
 :root {
     font-size: 10px;
