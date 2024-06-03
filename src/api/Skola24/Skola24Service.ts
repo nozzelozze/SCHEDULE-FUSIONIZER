@@ -1,8 +1,6 @@
 import { addDays, parseISO, formatISO, format, startOfWeek } from "date-fns";
 import { Activity } from "../../util/types";
-import Skola24Client from "./api/Skola24Client";
-import Host from "./api/utils/hosts";
-import SelectionType from "./api/utils/selectionTypes";
+import { Skola24Client, Host, SelectionType } from "skola24-node";
 import Colors from "../../util/colors";
 import { Skola24Config } from "../../config/config";
 
@@ -11,44 +9,27 @@ export class Skola24Service
 
     public getSchedule = async (week: number, config: Skola24Config): Promise<Activity[]> =>
     {
-        const client = new Skola24Client()
+        const client = new Skola24Client({Host: config.host as Host, UnitGuid: config.unitguid})
 
-        const hostName = config.host
-        const unitGuid = config.unitguid
         const selection = config.selection
         const acceptedLessons = config.accepted_lessons
 
-        const activeSchoolYearsResponse = await client.getActiveSchoolYears({ hostName: hostName as Host, checkSchoolYearsFeatures: false })
-        const year = activeSchoolYearsResponse.data.data.activeSchoolYears[0].guid
-
-        const renderKeyResponse = await client.getTimetableRenderKey({})
-        const key = renderKeyResponse.data.data.key
-
-        let renderTimetableResponse = await client.renderTimetable({
-            renderKey: key,
-            host: hostName as Host,
-            unitGuid: unitGuid as string,
-            startDate: null,
-            endDate: null,
+        let renderTimetableResponse = await client.Timetable.renderTimetable({
             scheduleDay: 0,
-            blackAndWhite: false,
-            width: 500,
-            height: 500,
             selectionType: SelectionType.Class,
             selection: selection as string,
-            showHeader: false,
-            periodText: "",
             week: week,
             year: new Date().getFullYear(),
-            privateFreeTextMode: null,
-            privateSelectionMode: false,
-            customerKey: "",
-            schoolYear: year
         })
 
         const activities: Activity[] = []
 
-        const lessonInfo = renderTimetableResponse.data.data.lessonInfo
+        const lessonInfo = renderTimetableResponse.lessonInfo
+        
+        if (lessonInfo == null) // no school this week
+        {
+            return []
+        }
 
         lessonInfo.forEach(lesson =>
         {

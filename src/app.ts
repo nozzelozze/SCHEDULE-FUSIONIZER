@@ -24,6 +24,7 @@ app.set("view engine", "pug")
 
 app.use(express.static("public"))
 
+console.log("Fetching schedules...")
 fetchSchedulesAndSave()
 
 app.get("/", (req, res) => 
@@ -49,6 +50,8 @@ app.get("/:config/:next?", checkValidConfig, (req, res) =>
         nextWeek: nextWeek
     })
 })
+
+console.log("Starting server...")
 
 var httpServer = http.createServer(app)
 var httpsServer = https.createServer(credentials, app)

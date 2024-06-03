@@ -8,12 +8,12 @@ html
         .main
             mixin event(event)
                 .event(style=`background-color: ${event.color}`)
-                    
                     p= event.label
                     div 
-                        span= new Date(new Date(event.startTime).getTime()).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+                        span= new Date(new Date(event.startTime).getTime()).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Stockholm' })
                         span -
-                        span= new Date(new Date(event.endTime).getTime()).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})
+                        span= new Date(new Date(event.endTime).getTime()).toLocaleTimeString('sv-SE', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Stockholm' })
+
 
             mixin dayColumn(day)
                 .day-column
